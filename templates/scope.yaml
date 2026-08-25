@@ -1,0 +1,51 @@
+# scope.yaml (template) — per-dev configuration. `/onboard` copies this to scope.yaml at the repo
+# root, then fills it in. scope.yaml is gitignored and never leaves the dev's machine. The agent
+# reads scope.yaml and adopts the DEV's identity, purview, and preferences (not the agent's).
+
+identity:
+  handle: <github-login>          # auto-detected via `gh api user`, then confirmed
+  name: <name for worknotes attribution>
+  email: <optional; attribution / filtering only>
+
+purview: []                       # components the dev owns → resolution scope; outside purview = handoff signal
+targets: []                       # repos the dev clones / runs / investigates locally
+
+remotes:                          # contribution topology
+  mode: auto                      # auto | fork | branch. `auto` = resolve-remotes.py decides from
+                                  # your push access at contribution time. Upstream (the framework
+                                  # repo) + your fork are DERIVED from the clone + your handle, not
+                                  # stored. Override to force fork-and-PR or branch-and-PR.
+
+# enabled — bundles wired in for this dev (skills symlinked + snippets opted-in). The DURABLE
+# record: `.claude/skills/` symlinks are local/gitignored, so onboarding re-materializes them from
+# this list on a fresh clone. Adopting a target enables its component bundle.
+# onboard seeds `enabled` from bundles marked `default_enabled: true` + your selection, then runs
+# enable-bundle.py for each. This list is the durable per-dev record (re-materialized on a fresh clone).
+enabled:
+  tools: []                       # e.g. [translator-tom]
+  components: []                  # e.g. [retriever]
+  extensions: []                  # e.g. [analysis-log]
+
+preferences:
+  # autonomy — how much the agent reasons/works before checking in with the dev:
+  #   gated         reason-then-check: confirm understanding, gate EVERY reasoning step
+  #   checkpointed  group tightly-related steps; more reasoning per chunk before checking in   [default]
+  #   guided        normal pacing; check in when reasonable, a little more cautious/frequent
+  #   autonomous    normal pacing; check in when the agent judges reasonable (least frequent)
+  autonomy: checkpointed
+
+  # terseness — narration style:
+  #   explanatory   narrate what each finding means, full explanations
+  #   standard      terser grammar, but still explains                                          [default]
+  #   terse         machine-log: title-grammar, one-liner steps, code-comment-style causal notes
+  terseness: standard
+
+  # contribution — how far the agent goes on an explicit "contribute this":
+  #   ask           audit, stage, preview branch/commit/PR, then offer to execute               [default]
+  #   automatic     carry through `gh pr create`
+  #   manual        audit + stage + preview only; the dev does the git
+  contribution: ask
+
+  # tool_choice — when several ENABLED tools fit a job, which to prefer (<job>: <tool-bundle>).
+  # Optional.
+  tool_choice: {}

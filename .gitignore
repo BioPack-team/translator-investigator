@@ -1,0 +1,56 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Translator Investigator — the gitignore boundary.
+# The framework is shared/versioned; a dev's scope, investigations, clones, memory,
+# and local surfaces are private and never leave the machine. Secrets never commit.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Per-dev scope & config  (templates/scope.yaml + templates/issue-sources.yaml ARE tracked) ──
+# copied from templates/scope.yaml + templates/issue-sources.yaml by /onboard
+/scope.yaml
+/issue-sources.yaml
+
+# ── Per-dev standing instructions & hooks  (.claude/settings.json IS tracked) ─
+/CLAUDE.local.md
+/.claude/settings.local.json
+
+# ── Local (unaudited) concepts — underscore-prefixed until /contribute promotes them ──
+# `_<slug>.md` = a concept not yet audited/canonical (inferred|curated); local-only. /contribute
+# renames it to `<slug>.md` (tracked) on promotion. Applies to global + bundle concept dirs.
+**/concepts/_*.md
+
+# ── Investigations & clones — all local & throwaway ──────────────────────────
+# investigations/ includes each investigation's worktree/ (fix mode) and artifacts/; repos/ = clones
+/investigations/
+/repos/
+# (per-dev memory lives in the HARNESS memory, not an in-repo dir — nothing to ignore here)
+
+# ── Extension-produced local artifacts ───────────────────────────────────────
+# created only if the analysis-log extension is enabled
+/analysis-log.md
+
+# ── Enabled-bundle skill symlinks — NOT handled here (by design) ──────────────
+# Shipped framework skills are tracked real dirs in .claude/skills/ with clean command
+# names. Per-dev *enable* symlinks (e.g. trapi-testing) are ignored locally: `enable`
+# appends each to .git/info/exclude and `disable` removes it. That keeps this committed
+# file skill-agnostic (zero upkeep) and command names clean. See plan §M.
+
+# ── Secrets (defensive — secrets must never be committed) ─────────────────────
+.env
+.env.*
+*.local.env
+*.pem
+*.key
+secrets.*
+**/secrets/
+
+# ── Language / build cruft (from anything run at the framework root) ──────────
+.venv/
+__pycache__/
+*.pyc
+
+# ── OS / editor cruft ─────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

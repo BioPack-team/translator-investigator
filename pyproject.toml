@@ -1,0 +1,51 @@
+# Framework management tooling. This is a uv-managed workspace, NOT a package:
+# format/lint/type tooling and the helper scripts are declared here and run via
+#   uv run task <name>    e.g.  uv run task check   (or  uv run task fixup)
+# `uv sync` creates/updates uv.lock (committed) so tooling is identical across clones.
+[project]
+name = "translator-investigator"
+version = "0.0.0"
+description = "Shareable framework for investigating NCATS Translator components."
+requires-python = ">=3.13"
+
+[tool.uv]
+package = false               # a workspace, not an installable library
+default-groups = ["tooling"]  # `uv sync` / `uv run` include tooling without --group
+
+[dependency-groups]
+tooling = [
+    "mdformat>=0.7",
+    "mdformat-gfm>=0.3",
+    "mdformat-frontmatter>=0.4",   # REQUIRED: without it, mdformat mangles YAML frontmatter
+    "ruff>=0.6",
+    "ty",                          # Astral type checker (pre-1.0; pinned via uv.lock)
+    "taskipy>=1.13",
+    "pre-commit>=3.7",
+]
+
+# Lint / format / type-check the helper scripts (the only Python in the repo). `check` is what CI
+# and pre-commit run; `fixup` auto-fixes locally.
+[tool.taskipy.tasks]
+lint = "ruff check .claude/scripts .claude/hooks"
+"lint:fix" = "ruff check --fix .claude/scripts .claude/hooks"
+format = "ruff format .claude/scripts .claude/hooks"
+"format:check" = "ruff format --check .claude/scripts .claude/hooks"
+typecheck = "ty check .claude/scripts .claude/hooks"
+# mdformat targets shipped content only (omits .venv/repos/investigations, and templates — whose
+# `<placeholder>` prose mdformat would escape).
+md = "mdformat concepts components tools .claude CLAUDE.md BUNDLES.md README.md CONTRIBUTING.md"
+"md:check" = "mdformat --check concepts components tools .claude CLAUDE.md BUNDLES.md README.md CONTRIBUTING.md"
+check = "ruff check .claude/scripts .claude/hooks && ruff format --check .claude/scripts .claude/hooks && ty check .claude/scripts .claude/hooks && mdformat --check concepts components tools .claude CLAUDE.md BUNDLES.md README.md CONTRIBUTING.md"
+fixup = "ruff check --fix .claude/scripts .claude/hooks && ruff format .claude/scripts .claude/hooks && ty check .claude/scripts .claude/hooks && mdformat concepts components tools .claude CLAUDE.md BUNDLES.md README.md CONTRIBUTING.md"
+hook = "pre-commit install"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 110
+extend-exclude = [".venv", "repos", "investigations"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ty.environment]
+python-version = "3.13"

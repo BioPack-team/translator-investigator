@@ -1,0 +1,18 @@
+# issue-sources.yaml (template) — maps issue nicknames to their repo, so "look at <num>" /
+# "feedback #45" resolve to the right GitHub repo. `/onboard` copies this to issue-sources.yaml at
+# the repo root, then adds the dev's personal nicknames. Gitignored (per-dev).
+#
+# Resolution: the LONGEST matching alias wins; a bare "look at <num>" falls back to `default`.
+# Each alias entry: <alias>: { repo: <org>/<repo>, dir: <investigations/ path segment> }.
+
+default: <your-default-target>    # bare "look at <num>" resolves here (e.g. your main component)
+
+aliases:
+  # A few consortium-wide starters — uncomment/extend for your scope:
+  # feedback:   { repo: NCATSTranslator/Feedback, dir: feedback }   # cross-team gap/feedback tracker
+  # retriever:  { repo: BioPack-team/retriever,    dir: retriever }
+  # shepherd:   { repo: BioPack-team/shepherd,     dir: shepherd }
+  # gandalf:    { repo: ranking-agent/gandalf,     dir: gandalf }
+  #
+  # Add your own — the alias is what you'll type; longest match wins:
+  # <nickname>: { repo: <org>/<repo>, dir: <repo> }

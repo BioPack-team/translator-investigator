@@ -1,0 +1,8 @@
+# GFM markdown normalization. The mdformat-gfm + mdformat-frontmatter plugins (pyproject
+# `tooling` group) auto-activate; frontmatter is REQUIRED so mdformat doesn't mangle YAML.
+# wrap = "keep": do NOT auto-reflow prose. Auto-wrap silently corrupts content (a +/-/*
+# pushed to a wrapped line-start is reparsed as a list); authors wrap manually. Local/throwaway
+# trees (investigations/, repos/) aren't formatted — contribution formats only staged files.
+wrap = "keep"
+number = true
+end_of_line = "lf"

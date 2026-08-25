@@ -1,0 +1,12 @@
+# Local checks on commit. `/onboard` arms this automatically (via `uv run task hook` =
+# `pre-commit install`) — git can't activate hooks on clone itself, so it's done at first setup.
+# Runs the same checks as CI (`task check`); to auto-fix instead, run `uv run task fixup`.
+repos:
+  - repo: local
+    hooks:
+      - id: checks
+        name: ruff + ty + mdformat (task check)
+        entry: uv run task check
+        language: system
+        pass_filenames: false
+        always_run: true
