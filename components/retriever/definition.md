@@ -128,5 +128,11 @@ env if used:
   → this bundle's `concepts/`.)
 - **Retriever registers as a KP but functions as an aggregator** — `kind: kp` reflects
   the SmartAPI `component`; the aggregating role is the substance.
+- **`instance_env` = internal maturity signal (vs `x-maturity` = advertised).** `instance_env`
+  (config, default `dev`; `src/retriever/config/general.py:343`) is how the **deployer tells the
+  running app which maturity level it is**, so the app can apply maturity-appropriate behavior if
+  warranted; it also feeds the Sentry environment and the outbound sub-query User-Agent. Distinct
+  from **`x-maturity`** in the OpenAPI `servers[]` (`src/retriever/config/openapi.py:163`), which
+  *advertises* the level to clients/SmartAPI. See the `component-maturity-levels` concept.
 - Gandalf config: `CONFIG.tier0.gandalf` (`src/retriever/config/general.py`); Tier 1
   alongside in `config/` + `general.py`.
