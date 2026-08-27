@@ -93,7 +93,11 @@ def enabled_concept_dirs() -> list[Path]:
         if in_enabled:
             if line[:1] not in ("", " ", "\t"):  # dedent → block ended
                 break
-            m = re.match(r"\s*([\w-]+):\s*\[(.*)\]", line)
+            # `[^\]]*` (not `.*`) so the capture ends at the FIRST `]`. A greedy `.*` runs to the
+            # LAST `]` on the line, swallowing any trailing YAML comment — and the template's own
+            # comments contain brackets (`# e.g. [translator-tom]`). That corrupted the final entry
+            # of every inline list, so the last bundle's concepts/ were silently never indexed.
+            m = re.match(r"\s*([\w-]+):\s*\[([^\]]*)\]", line)
             if m and m.group(1) in KIND_DIRS:
                 for name in as_list(m.group(2)):
                     dirs.append(ROOT / m.group(1) / name / "concepts")
