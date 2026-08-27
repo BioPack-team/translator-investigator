@@ -1,6 +1,6 @@
 ## retriever
 
-When investigating **retriever**, two standing cautions (full run/verify: this bundle's
+When investigating **retriever**, three standing cautions (full run/verify: this bundle's
 `definition.md`):
 
 - **Reachability-first triage (local runs).** A **locally-run** Retriever reaches the tier backends
@@ -12,3 +12,8 @@ When investigating **retriever**, two standing cautions (full run/verify: this b
   HTTP, **no VPN, Tier 1 included**), so it doesn't apply there.
 - **Destructive DB tasks.** `task dev` / `task dbs` **force-recreate (wipe) the local Dragonfly +
   MongoDB containers on every run** — don't rely on local DB state persisting across restarts.
+- **`/status/*` `lookback` shadows `since`.** On a live instance's status dashboard,
+  `/status/tiers`, `/status/timeline`, and `/status/durations` default `lookback=24h`, which
+  **silently overrides `since`** — a `since`/`until` window quietly returns the last 24h instead.
+  Use the paged endpoints (`/status/failed` · `/completed` · `/failure_breakdown`, which honor
+  `since`/`until`) or pass an explicit `lookback` sized to the window.
