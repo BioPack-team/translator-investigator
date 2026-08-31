@@ -6,13 +6,13 @@ description: >-
   looking into a GitHub issue or begins a free-form / cross-cutting investigation.
   Triggers on: "investigate #<n>", "look into <topic>", "start an investigation", "dig
   into <X>", a feedback PK to chase down. This is setup only; how to approach the
-  investigation afterward is the ambient investigate posture in CLAUDE.md.
+  investigation afterward is the ambient investigate posture in AGENTS.md.
 ---
 
 # Begin investigation
 
 Scaffold a new investigation workdir. This skill's job is **setup only** — reproducing,
-recording, and iterating afterward is the ambient investigate posture in CLAUDE.md
+recording, and iterating afterward is the ambient investigate posture in AGENTS.md
 ("Operational modes → investigate").
 
 ## 1. Pick the mode
@@ -49,5 +49,5 @@ recording, and iterating afterward is the ambient investigate posture in CLAUDE.
 
 ## Done → investigate
 
-The workdir is ready. Proceed in the ambient **investigate** mode (CLAUDE.md): reproduce
+The workdir is ready. Proceed in the ambient **investigate** mode (AGENTS.md): reproduce
 where applicable, record findings in `worknotes.md`, keep `status` current.

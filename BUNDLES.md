@@ -20,7 +20,7 @@ kinds share this shape:
   skills/            # optional — skill dirs symlinked into .claude/skills/ when enabled
   concepts/          # optional — bundle-specific concepts; folded into the auto-trigger index on enable
   snippets/          # optional — opt-in snippets for the dev's local surfaces
-    CLAUDE.local.md      # standing-instruction snippet
+    AGENTS.local.md      # standing-instruction snippet (per-dev local core)
     settings.hooks.json  # hook snippet for .claude/settings.local.json
 ```
 
@@ -47,9 +47,10 @@ A bundle is inert until **enabled**. Enabling records it in `scope.yaml` `enable
 symlinks its `skills/` — **plus any skills the cloned repo ships** (`repos/<name>/.agents/skills/`
 · `.claude/skills/`; adopt-from-repo, tracks upstream) — into `.claude/skills/` (clean names) and adds them to
 `.git/info/exclude`, folds any `concepts/` into the auto-trigger index, **auto-merges any
-`snippets/CLAUDE.local.md`** into `CLAUDE.local.md`, and **offers** any `snippets/settings.hooks.json`
-hook (merged only on the dev's yes, via `--hooks`). Scaffold snippets with `new-artifact.py snippet --bundle <kind>/<name>`. Full procedure: see **CLAUDE.md →
-"Enabling & disabling bundles."**
+`snippets/AGENTS.local.md`** into `AGENTS.local.md` (legacy `snippets/CLAUDE.local.md` still
+accepted), and **offers** any `snippets/settings.hooks.json` hook (merged only on the dev's yes, via
+`--hooks`). Scaffold snippets with `new-artifact.py snippet --bundle <kind>/<name>`. Full procedure:
+see **AGENTS.md → "Enabling & disabling bundles."**
 
 A bundle can set **`default_enabled: true`** in its `definition.md` frontmatter — `onboard`
 pre-selects such bundles on first setup (the dev can opt out). The default-ness is a self-describing

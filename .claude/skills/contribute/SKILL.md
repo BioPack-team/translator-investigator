@@ -21,7 +21,8 @@ in control:** you stage + preview, and never commit/push without their go (excep
 - **concept** — `concepts/*.md` or a bundle's `concepts/*.md`
 - **bundle** — a component / tool / extension dir
 - **skill** — a `.claude/skills/<name>/` (new or improved)
-- **framework change** — CLAUDE.md, BUNDLES.md, templates, hooks, etc.
+- **framework change** — AGENTS.md (+ per-agent adapters), BUNDLES.md, templates, hooks,
+  dependencies (`pyproject.toml` + `uv.lock`), etc.
 
 ## 0. Pre-flight
 
@@ -31,7 +32,7 @@ in control:** you stage + preview, and never commit/push without their go (excep
 - **Target = the framework repo.** Contribution always PRs to the **framework repo** (this clone) —
   *never* a component's own repo (that would be a `fix`, not a contribution).
 - **Resolve remotes** (deterministic — don't guess remote names):
-  `python3 "${CLAUDE_PROJECT_DIR}/.claude/scripts/resolve-remotes.py"` → JSON
+  `python3 .claude/scripts/resolve-remotes.py` (from the repo root) → JSON
   `{upstream, fork, default_branch, mode, fork_exists, error}`. If `error` is set (gh not authed,
   not a git clone) → surface it, route to `/onboard`, and stop. `mode` from the resolver wins over
   a stale `scope.remotes.mode`; fork mode with `fork_exists: false` → have the dev create the fork
@@ -50,7 +51,7 @@ this also keeps unrelated tracked edits out of the PR).
 - **mdformat** the staged markdown:
   `uv run mdformat <staged paths>` (`wrap="keep"`, frontmatter-safe — reads `.mdformat.toml`).
 - **Secret check (informal, advisory)** — run
-  `python3 "${CLAUDE_PROJECT_DIR}/.claude/scripts/secret-scan.py" <staged paths>`. It returns a
+  `python3 .claude/scripts/secret-scan.py <staged paths>`. It returns a
   **prioritized list of potential-risk items** (HIGH→LOW); **surface that list to the dev to review**
   — it never removes anything and isn't a hard block. Shared artifacts should carry secret
   *descriptions + placeholder skeletons* only, so flag real-looking values where a placeholder
@@ -71,7 +72,7 @@ an agent** — not just that they're secret-free:
   run procedure complete (prereqs → setup → run → verify)?
 - **Implied-but-missing snippets** — does it describe standing behavior ("always pass X in
   non-interactive use", "prefer this for that") that *should* be a `snippets/` entry
-  (`CLAUDE.local.md` / settings hook) but isn't? Offer to add it.
+  (`AGENTS.local.md` / settings hook) but isn't? Offer to add it.
 - **Gaps** — unfilled placeholders, TODOs, vague steps, missing prereqs/verify.
 - **Agent-facing quality** — imperative + concrete + clickable refs, not just description.
 
@@ -85,7 +86,7 @@ gaps, add implied snippets) before the curation flip.
 For a **new** artifact currently at `curated`, set the exact field in the exact file:
 
 - **concept** → set `curation: canonical` in the concept file's frontmatter, **rename `_<slug>.md`
-  → `<slug>.md`** (local → tracked), then re-index (its row moves `CLAUDE.local.md` → `CLAUDE.md`).
+  → `<slug>.md`** (local → tracked), then re-index (its row moves `AGENTS.local.md` → `AGENTS.md`).
 - **bundle** (component / tool / extension) → set `curation: canonical` in
   `<kind>/<name>/definition.md` frontmatter.
 - **skill / framework change** → no `curation` field; the PR itself is the promotion.

@@ -4,8 +4,8 @@
 
 Usage: enable-bundle.py <kind> <name> [--hooks]     # kind = components | tools | extensions
 
-- CLAUDE.local.md snippet → **auto-merged** (enabling is the dev's opt-in), wrapped in per-bundle
-  markers so disable can remove it.
+- AGENTS.local.md snippet → **auto-merged** (enabling is the dev's opt-in), wrapped in per-bundle
+  markers so disable can remove it. Legacy `snippets/CLAUDE.local.md` is still accepted as a fallback.
 - settings.local.json hooks → **offered by default**; merged only with `--hooks` (content-based).
 
 Does NOT edit scope.yaml (the agent records `enabled:` first). The agent records enabling; this
@@ -23,9 +23,9 @@ from pathlib import Path
 
 ROOT = Path(os.environ.get("CLAUDE_PROJECT_DIR") or Path(__file__).resolve().parents[2])
 KINDS = ("components", "tools", "extensions")
-CLAUDE_LOCAL = ROOT / "CLAUDE.local.md"
+AGENTS_LOCAL = ROOT / "AGENTS.local.md"
 SETTINGS_LOCAL = ROOT / ".claude" / "settings.local.json"
-LOCAL_HEADER = "# CLAUDE.local.md — your local, per-dev instructions & index (gitignored)."
+LOCAL_HEADER = "# AGENTS.local.md — your local, per-dev instructions & index (gitignored)."
 
 
 def add_excludes(lines: list[str]) -> None:
@@ -44,7 +44,7 @@ def add_excludes(lines: list[str]) -> None:
 def merge_md_snippet(tag: str, content: str) -> None:
     start, end = f"<!-- BUNDLE-SNIPPET:{tag}:START -->", f"<!-- BUNDLE-SNIPPET:{tag}:END -->"
     block = f"{start}\n\n{content.strip()}\n{end}"
-    text = CLAUDE_LOCAL.read_text(encoding="utf-8") if CLAUDE_LOCAL.exists() else ""
+    text = AGENTS_LOCAL.read_text(encoding="utf-8") if AGENTS_LOCAL.exists() else ""
     s, e = text.find(start), text.find(end)
     if s != -1 and e != -1 and e >= s:
         new = text[:s] + block + text[e + len(end) :]
@@ -53,7 +53,7 @@ def merge_md_snippet(tag: str, content: str) -> None:
     else:
         new = f"{LOCAL_HEADER}\n\n{block}\n"
     if new != text:
-        CLAUDE_LOCAL.write_text(new, encoding="utf-8")
+        AGENTS_LOCAL.write_text(new, encoding="utf-8")
 
 
 def merge_hooks(frag: dict) -> int:
@@ -85,41 +85,63 @@ def main() -> int:
         print(f"enable-bundle: no bundle at {a.kind}/{a.name}", file=sys.stderr)
         return 1
 
-    # 1. symlink skills + gitignore them locally. Sources: skills the bundle itself ships, PLUS any
-    #    the cloned repo ships (adopt-from-repo — auto-tracks upstream on `git pull` of the clone).
+    # 1. symlink skills + gitignore them locally. Sources: the bundle's own skills, the clone's
+    #    .agents/skills · .claude/skills, or a root-level SKILL.md (clone-into-~/.claude/skills/<name>).
     dest_root = ROOT / ".claude" / "skills"
     dest_root.mkdir(parents=True, exist_ok=True)
-    skill_sources = [
-        bundle / "skills",
-        ROOT / "repos" / a.name / ".agents" / "skills",
-        ROOT / "repos" / a.name / ".claude" / "skills",
-    ]
+    repo = ROOT / "repos" / a.name
+    collection_dirs = [bundle / "skills", repo / ".agents" / "skills", repo / ".claude" / "skills"]
     linked: list[str] = []
-    for src_dir in skill_sources:
+
+    def link_skill(sk: Path) -> None:
+        dest = dest_root / sk.name
+        target = os.path.relpath(sk, dest_root)
+        if dest.is_symlink():
+            if os.readlink(dest) != target:
+                print(f"enable-bundle: {dest.name} is a different symlink — skipping", file=sys.stderr)
+                return
+        elif dest.exists():
+            print(f"enable-bundle: {dest.name} exists and isn't our symlink — skipping", file=sys.stderr)
+            return
+        else:
+            dest.symlink_to(target)
+        linked.append(f".claude/skills/{sk.name}")
+
+    for src_dir in collection_dirs:
         if not src_dir.is_dir():
             continue
-        for sk in sorted(p for p in src_dir.iterdir() if (p / "SKILL.md").exists()):
-            dest = dest_root / sk.name
-            target = os.path.relpath(sk, dest_root)
-            if dest.is_symlink():
-                if os.readlink(dest) != target:
-                    print(f"enable-bundle: {dest.name} is a different symlink — skipping", file=sys.stderr)
-                    continue
-            elif dest.exists():
-                print(f"enable-bundle: {dest.name} exists and isn't our symlink — skipping", file=sys.stderr)
-                continue
-            else:
-                dest.symlink_to(target)
-            linked.append(f".claude/skills/{sk.name}")
+        for sk in sorted(src_dir.iterdir()):
+            if (sk / "SKILL.md").exists():
+                link_skill(sk)
+            elif sk.is_symlink():  # a shim into a not-yet-cloned repo degrades to a dangling link
+                hint = " (clone the repo?)" if not sk.exists() else ""
+                print(
+                    f"enable-bundle: skill symlink {sk.name} → {os.readlink(sk)} has no "
+                    f"SKILL.md — skipping{hint}",
+                    file=sys.stderr,
+                )
+
+    if (repo / "SKILL.md").exists():  # repo distributed as a single root-level SKILL.md
+        link_skill(repo)
+
     add_excludes(linked)
+
+    if not linked and repo.is_dir():
+        print(
+            f"enable-bundle: {repo.relative_to(ROOT)} is present but adopted no skills — "
+            "if it ships one, its layout isn't one I recognize",
+            file=sys.stderr,
+        )
 
     # 2. re-index concepts (folds this bundle's concepts/ if scope.enabled lists it)
     reindex = ROOT / ".claude" / "hooks" / "reindex-concepts.py"
-    if reindex.exists():
-        subprocess.run([sys.executable, str(reindex), "--all"], check=False)
+    if reindex.exists():  # via `uv run` — reindex needs PyYAML, which the bare interpreter lacks
+        subprocess.run(["uv", "run", "--project", str(ROOT), "python", str(reindex), "--all"], check=False)
 
-    # 3. CLAUDE.local.md snippet — auto-merge
-    md = bundle / "snippets" / "CLAUDE.local.md"
+    # 3. per-dev local-core snippet — auto-merge (prefer AGENTS.local.md; legacy CLAUDE.local.md fallback)
+    md = bundle / "snippets" / "AGENTS.local.md"
+    if not md.exists():
+        md = bundle / "snippets" / "CLAUDE.local.md"
     if md.exists():
         merge_md_snippet(f"{a.kind}/{a.name}", md.read_text(encoding="utf-8"))
 
@@ -135,7 +157,7 @@ def main() -> int:
 
     print(
         f"enabled {a.kind}/{a.name}: {len(linked)} skill(s)"
-        + (", CLAUDE.local.md snippet merged" if md.exists() else "")
+        + (", AGENTS.local.md snippet merged" if md.exists() else "")
         + hooks_note
     )
     return 0

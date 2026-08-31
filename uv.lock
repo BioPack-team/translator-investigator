@@ -318,6 +318,9 @@ version = "0.0.0"
 source = { virtual = "." }
 
 [package.dev-dependencies]
+scripts = [
+    { name = "pyyaml" },
+]
 tooling = [
     { name = "mdformat" },
     { name = "mdformat-frontmatter" },
@@ -331,6 +334,7 @@ tooling = [
 [package.metadata]
 
 [package.metadata.requires-dev]
+scripts = [{ name = "pyyaml", specifier = ">=6" }]
 tooling = [
     { name = "mdformat", specifier = ">=0.7" },
     { name = "mdformat-frontmatter", specifier = ">=0.4" },

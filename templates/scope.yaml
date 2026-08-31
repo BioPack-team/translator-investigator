@@ -7,10 +7,11 @@ identity:
   name: <name for worknotes attribution>
   email: <optional; attribution / filtering only>
 
-purview: []                       # components the dev owns → resolution scope; outside = handoff signal.
-                                  # OPTIONAL — leave empty for triage-only roles (PI/PM); they work
-                                  # from issue-sources.yaml instead of owning a component.
-targets: []                       # repos the dev clones / runs / investigates locally (may be empty for triage-only)
+purview: []                       # components you maintain / are point-person for → resolution +
+                                  # handoff scope (a scope marker, NOT ownership). OPTIONAL — empty
+                                  # is fine for pure contributors + triage-only roles (PI/PM), who
+                                  # work from issue-sources.yaml.
+targets: []                       # repos you work on: clone / run / investigate / contribute to (the primary scope; may be empty)
 
 remotes:                          # contribution topology
   mode: auto                      # auto | fork | branch. `auto` = resolve-remotes.py decides from

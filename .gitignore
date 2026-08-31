@@ -9,7 +9,10 @@
 /scope.yaml
 /issue-sources.yaml
 
-# ── Per-dev standing instructions & hooks  (.claude/settings.json IS tracked) ─
+# ── Per-dev standing instructions & hooks  (AGENTS.md + .claude/settings.json ARE tracked) ─
+# AGENTS.local.md = the per-dev local core (concept index + enabled-bundle snippets); the
+# per-agent adapters (CLAUDE.local.md) import it. AGENTS.md itself is shared/tracked.
+/AGENTS.local.md
 /CLAUDE.local.md
 /.claude/settings.local.json
 
@@ -22,7 +25,9 @@
 # investigations/ includes each investigation's worktree/ (fix mode) and artifacts/; repos/ = clones
 /investigations/
 /repos/
-# (per-dev memory lives in the HARNESS memory, not an in-repo dir — nothing to ignore here)
+# Per-dev memory lives in the agent's native store (e.g. Claude Code's harness memory). Agents
+# without one fall back to a gitignored root MEMORY.md (see AGENTS.md) — ignored here so it never commits.
+/MEMORY.md
 
 # ── Extension-produced local artifacts ───────────────────────────────────────
 # created only if the analysis-log extension is enabled

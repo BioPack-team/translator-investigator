@@ -8,7 +8,8 @@ benefits.
 
 Your **scope, clones, investigations, and memory are local** (gitignored) and never leave your
 machine. The **framework** is the shared, versioned part: `concepts/`, `components/`, `tools/`,
-`extensions/`, skills, `CLAUDE.md`, `BUNDLES.md`, templates, and the helper scripts.
+`extensions/`, skills, `AGENTS.md`, `BUNDLES.md`, templates, the helper scripts, and the framework's
+own deps (`pyproject.toml` + `uv.lock`).
 
 ## How to contribute
 
