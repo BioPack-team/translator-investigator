@@ -47,7 +47,7 @@ Bring a **new** concept into the library. Two lifecycles:
   scan at the main agent's effort or higher unless the nuance clearly demands it. It greps/reads
   related code (`repos/<target>/`, the component's `definition.md`) to orient and surface targeted
   questions — orienting, not exhaustive tracing. (Curated path: await its result, then interview.)
-- **Check the concept index** — CLAUDE.md's auto-trigger index + `concepts/` (global and enabled
+- **Check the concept index** — AGENTS.md's auto-trigger index + `concepts/` (global and enabled
   bundles') for related/overlapping concepts. Note `see_also` candidates. **On overlap, don't
   proliferate:** if it substantially duplicates an existing concept, **augment that file** instead
   of creating a new one; if it's merely another name for one, add it to that concept's `aka` and
@@ -55,7 +55,7 @@ Bring a **new** concept into the library. Two lifecycles:
 
 ## 3. Authoring quality (both paths)
 
-Instantiate the file — `python3 "${CLAUDE_PROJECT_DIR}/.claude/scripts/new-artifact.py" concept <slug>` (for a bundle concept add `--bundle components/<name>` — **plural** kind, must be an existing
+Instantiate the file — `python3 .claude/scripts/new-artifact.py concept <slug>` (from the repo root; for a bundle concept add `--bundle components/<name>` — **plural** kind, must be an existing
 bundle). This creates `concepts/_<slug>.md` — **underscore-prefixed = local/unaudited** (gitignored)
 until `/contribute` promotes it (drops the underscore → canonical). Then **fill it in** (don't
 compose from scratch). Exemplar to match for shape and depth: the shipped `concepts/subclassing.md`.
@@ -88,10 +88,10 @@ compose from scratch). Exemplar to match for shape and depth: the shipped `conce
   since it authors files and re-indexes. Spawn it (low/medium effort — it does its own cursory scan
   inline, no further sub-spawn) and **continue the main task immediately.** The background agent
   triages and writes the file (§3) with `curation: inferred`.
-- **Re-index explicitly** — a background subagent's write may not trigger the PostToolUse re-index
-  hook, so after authoring run
-  `python3 "${CLAUDE_PROJECT_DIR}/.claude/hooks/reindex-concepts.py" --all` and **confirm it prints
-  `N concept(s) indexed`** (a missing line means it didn't run — check `$CLAUDE_PROJECT_DIR`) to fold the new
+- **Re-index explicitly** — a background/subagent write may not trigger the after-edit re-index
+  hook (and non-Claude agents may be on the manual reindex fallback), so after authoring run
+  `uv run python .claude/hooks/reindex-concepts.py --all` (from the repo root) and **confirm it prints
+  `N concept(s) indexed`** (a missing line means it didn't run — check you're at the repo root) to fold the new
   keywords into the index.
 - **On completion, notify the dev — terse and non-blocking:** relay that you authored an inferred
   concept and they may review at their convenience. (The main task has continued in the meantime.)
@@ -104,7 +104,7 @@ compose from scratch). Exemplar to match for shape and depth: the shipped `conce
 
 - Curation reflects guidance: **`inferred`** (agent-only) → **`curated`** (human-reviewed). Neither
   path produces `canonical` — that's `/contribute`.
-- Don't hand-edit the CLAUDE.md concept index; the re-index hook regenerates it on concept edits
+- Don't hand-edit the AGENTS.md concept index; the re-index hook regenerates it on concept edits
   (global or an enabled bundle's `concepts/`). A bundle concept must be enabled for its keywords to
   join the index.
 - No secrets in concept files (they're shared/contributable) — see `BUNDLES.md`.

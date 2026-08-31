@@ -13,7 +13,7 @@ does: <one line — the standing behavior this adds, e.g. "log every analysis sc
 
 ## Opt in
 
-<Enabling offers the snippets in `./snippets/` for the dev to accept into their `CLAUDE.local.md`
+<Enabling offers the snippets in `./snippets/` for the dev to accept into their `AGENTS.local.md`
 (standing instruction) and/or `.claude/settings.local.json` (a hook that makes it automatic).
 Describe what each snippet does. If it ships a skill (`./skills/`), note it.>
 

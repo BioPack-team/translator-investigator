@@ -94,7 +94,7 @@ def main() -> int:
         if not (bundle_dir / "definition.md").exists():
             p.error(f"no bundle at {plural}/{bname}")
         (bundle_dir / "snippets").mkdir(parents=True, exist_ok=True)
-        for fn in ("CLAUDE.local.md", "settings.hooks.json"):
+        for fn in ("AGENTS.local.md", "settings.hooks.json"):
             dest = bundle_dir / "snippets" / fn
             if dest.exists():
                 print(f"kept existing {dest.relative_to(ROOT)}")

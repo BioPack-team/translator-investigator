@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Disable a bundle: remove its skill symlinks + .git/info/exclude entries, re-index concepts,
-remove its CLAUDE.local.md snippet block, and best-effort remove its settings.local.json hooks.
+remove its AGENTS.local.md snippet block, and best-effort remove its settings.local.json hooks.
 Stdlib only; idempotent. Reverse of enable-bundle.py.
 
 Usage: disable-bundle.py <kind> <name>     # kind = components | tools | extensions
@@ -21,7 +21,7 @@ from pathlib import Path
 
 ROOT = Path(os.environ.get("CLAUDE_PROJECT_DIR") or Path(__file__).resolve().parents[2])
 KINDS = ("components", "tools", "extensions")
-CLAUDE_LOCAL = ROOT / "CLAUDE.local.md"
+AGENTS_LOCAL = ROOT / "AGENTS.local.md"
 SETTINGS_LOCAL = ROOT / ".claude" / "settings.local.json"
 
 
@@ -34,15 +34,15 @@ def drop_excludes(lines: set[str]) -> None:
 
 
 def remove_md_snippet(tag: str) -> bool:
-    if not CLAUDE_LOCAL.exists():
+    if not AGENTS_LOCAL.exists():
         return False
     start, end = f"<!-- BUNDLE-SNIPPET:{tag}:START -->", f"<!-- BUNDLE-SNIPPET:{tag}:END -->"
-    text = CLAUDE_LOCAL.read_text(encoding="utf-8")
+    text = AGENTS_LOCAL.read_text(encoding="utf-8")
     s, e = text.find(start), text.find(end)
     if s == -1 or e == -1 or e < s:
         return False
     new = (text[:s].rstrip() + "\n" + text[e + len(end) :].lstrip("\n")).strip() + "\n"
-    CLAUDE_LOCAL.write_text(new, encoding="utf-8")
+    AGENTS_LOCAL.write_text(new, encoding="utf-8")
     return True
 
 
@@ -93,8 +93,8 @@ def main() -> int:
     drop_excludes(removed)
 
     reindex = ROOT / ".claude" / "hooks" / "reindex-concepts.py"
-    if reindex.exists():
-        subprocess.run([sys.executable, str(reindex), "--all"], check=False)
+    if reindex.exists():  # via `uv run` — reindex needs PyYAML, which the bare interpreter lacks
+        subprocess.run(["uv", "run", "--project", str(ROOT), "python", str(reindex), "--all"], check=False)
 
     md_removed = remove_md_snippet(f"{a.kind}/{a.name}")
     hooks_frag = bundle / "snippets" / "settings.hooks.json"
@@ -102,7 +102,7 @@ def main() -> int:
 
     print(
         f"disabled {a.kind}/{a.name}: {len(removed)} skill symlink(s)"
-        + (", CLAUDE.local.md snippet removed" if md_removed else "")
+        + (", AGENTS.local.md snippet removed" if md_removed else "")
         + (
             f", {hooks_removed} hook entr{'y' if hooks_removed == 1 else 'ies'} removed"
             if hooks_removed

@@ -9,8 +9,8 @@ description = "Shareable framework for investigating NCATS Translator components
 requires-python = ">=3.13"
 
 [tool.uv]
-package = false               # a workspace, not an installable library
-default-groups = ["tooling"]  # `uv sync` / `uv run` include tooling without --group
+package = false                         # a workspace, not an installable library
+default-groups = ["tooling", "scripts"]  # `uv sync` / `uv run` include both without --group
 
 [dependency-groups]
 tooling = [
@@ -23,8 +23,15 @@ tooling = [
     "pre-commit>=3.7",
 ]
 
-# Lint / format / type-check the helper scripts (the only Python in the repo). `check` is what CI
-# and pre-commit run; `fixup` auto-fixes locally.
+# Runtime deps of the framework's own Python (currently just the reindex hook, run via `uv run`).
+# Add uv deps here freely as the framework grows — see AGENTS.md "Shared framework vs. the dev's
+# local files". uv.lock is committed, so a dep is contributed like any other framework change.
+scripts = [
+    "pyyaml>=6",                   # real YAML parser for reindex-concepts.py
+]
+
+# Lint / format / type-check the helper scripts. `check` is what CI and pre-commit run; `fixup`
+# auto-fixes locally.
 [tool.taskipy.tasks]
 lint = "ruff check .claude/scripts .claude/hooks"
 "lint:fix" = "ruff check --fix .claude/scripts .claude/hooks"
@@ -33,10 +40,10 @@ format = "ruff format .claude/scripts .claude/hooks"
 typecheck = "ty check .claude/scripts .claude/hooks"
 # mdformat targets shipped content only (omits .venv/repos/investigations, and templates — whose
 # `<placeholder>` prose mdformat would escape).
-md = "mdformat concepts components tools .claude CLAUDE.md BUNDLES.md README.md CONTRIBUTING.md"
-"md:check" = "mdformat --check concepts components tools .claude CLAUDE.md BUNDLES.md README.md CONTRIBUTING.md"
-check = "ruff check .claude/scripts .claude/hooks && ruff format --check .claude/scripts .claude/hooks && ty check .claude/scripts .claude/hooks && mdformat --check concepts components tools .claude CLAUDE.md BUNDLES.md README.md CONTRIBUTING.md"
-fixup = "ruff check --fix .claude/scripts .claude/hooks && ruff format .claude/scripts .claude/hooks && ty check .claude/scripts .claude/hooks && mdformat concepts components tools .claude CLAUDE.md BUNDLES.md README.md CONTRIBUTING.md"
+md = "mdformat concepts components tools .claude AGENTS.md CLAUDE.md BUNDLES.md README.md CONTRIBUTING.md"
+"md:check" = "mdformat --check concepts components tools .claude AGENTS.md CLAUDE.md BUNDLES.md README.md CONTRIBUTING.md"
+check = "ruff check .claude/scripts .claude/hooks && ruff format --check .claude/scripts .claude/hooks && ty check .claude/scripts .claude/hooks && mdformat --check concepts components tools .claude AGENTS.md CLAUDE.md BUNDLES.md README.md CONTRIBUTING.md"
+fixup = "ruff check --fix .claude/scripts .claude/hooks && ruff format .claude/scripts .claude/hooks && ty check .claude/scripts .claude/hooks && mdformat concepts components tools .claude AGENTS.md CLAUDE.md BUNDLES.md README.md CONTRIBUTING.md"
 hook = "pre-commit install"
 
 [tool.ruff]

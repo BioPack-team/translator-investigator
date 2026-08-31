@@ -87,10 +87,10 @@ README/manifest); **run-hints** (task-runner commands, ports, docker services �
 ## 6. Tools: offer to author snippets (from the interview)
 
 For a **tool**, interview the dev on **how and when they'll use it**, then **offer to author its
-`snippets/`** capturing that intent: scaffold with `python3 .claude/scripts/new-artifact.py snippet --bundle tools/<name>` (creates `snippets/CLAUDE.local.md` + `settings.hooks.json`), then fill in
+`snippets/`** capturing that intent: scaffold with `python3 .claude/scripts/new-artifact.py snippet --bundle tools/<name>` (creates `snippets/AGENTS.local.md` + `settings.hooks.json`), then fill in
 the ones that apply (delete an unused one):
 
-- a **`CLAUDE.local.md`** standing-instruction snippet — when to reach for the tool and the dev's
+- a **`AGENTS.local.md`** standing-instruction snippet — when to reach for the tool and the dev's
   workflow/preferences for it (this is **auto-merged** on enable);
 - optionally a **`settings.hooks.json`** hook (this is **offered**, merged only with `--hooks`).
 
@@ -100,7 +100,7 @@ If the tool ships its own skill, enabling also symlinks that in (so `/its-skill`
 ## 7. Offer clone + enable (offer-now-defer)
 
 - **Adopt/use it** → record in `scope.yaml` `enabled:`, then `enable-bundle.py` (symlinks skills,
-  re-indexes concepts, **auto-merges the CLAUDE.local.md snippet**, offers any hook) — see CLAUDE.md
+  re-indexes concepts, **auto-merges the AGENTS.local.md snippet**, offers any hook) — see AGENTS.md
   "Enabling & disabling bundles". Clone into `repos/`.
 - **Peripheral only** → stop at the `inferred` definition; no clone into `repos/`, no enable. (Drop
   the scratch clone.)

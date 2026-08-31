@@ -1,6 +1,6 @@
 ---
 name: <concept-slug>
-aka: [<alias>, <alias>]   # keywords/triggers — these feed the CLAUDE.md auto-trigger index
+aka: [<alias>, <alias>]   # keywords/triggers — these feed the AGENTS.md auto-trigger index
 domain: [<area>]          # e.g. TRAPI, retriever, ranking
 see_also: []              # tightly-related concept slugs needed to grok this one (NOT all of `domain`)
 curation: inferred        # inferred | curated | canonical  (lifecycle — see BUNDLES.md)

@@ -4,7 +4,7 @@ mode: <issue|topic>      # issue = filed GH issue; topic = free/cross-cutting in
 status: investigating    # investigating | root-caused | fixing | handoff | resolved
 opened: <YYYY-MM-DD>
 components: [<target>]   # everything this touches; cross-cutting = list more
-likely_handoff: []       # names/teams/repos to hand off to if the cause is outside your purview (triage-only devs own nothing → the owning team is the handoff)
+likely_handoff: []       # names/teams/repos to hand off to if the cause is outside your purview (no purview → the owning team is the handoff)
 # --- issue mode only (delete for topic mode) ---
 # issue: { repo: <org>/<repo>, number: <n>, url: <issue url> }
 # pk: <ARS PK, or a Translator-UI / ARAX-UI link>   # feedback issues
