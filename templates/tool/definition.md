@@ -1,7 +1,7 @@
 ---
 name: <tool-name>
-org: <github-org>
-repo: <repo>
+org: <github-org>      # optional — omit/blank for a non-repo tool (endpoint, script bundle)
+repo: <repo>          # optional — omit/blank for a non-repo tool
 status: active         # active | deprecated | defunct  (liveness)
 curation: inferred     # inferred | curated | canonical  (lifecycle — see BUNDLES.md)
 provides: <one line — the capability this tool gives, e.g. "fire TRAPI queries and assert on responses">
@@ -18,7 +18,9 @@ tool, note how they differ.>
 ## Install & run
 
 <How to obtain and invoke it — prefer a pinned `uv run …` invocation. Note any flags/gotchas an
-agent needs to run it cleanly (e.g. non-interactive flags in a non-TTY shell).>
+agent needs to run it cleanly (e.g. non-interactive flags in a non-TTY shell). For a **non-repo
+tool**, put the actual usage here instead: the endpoint URL + example calls, or the scripts + how
+to run them.>
 
 ## Using it
 

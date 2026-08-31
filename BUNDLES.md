@@ -5,7 +5,9 @@ kinds share this shape:
 
 - **`components/<name>/`** — a repo under investigation (a target). Template:
   `templates/component/`.
-- **`tools/<name>/`** — a repo used as an instrument of investigation. Template:
+- **`tools/<name>/`** — an instrument of investigation. Often a repo (a CLI/library), but
+  a tool need **not** be a repo — it can be a non-repo bundle of info + infra: instructions
+  for using a public endpoint, a set of scripts for a specific task, etc. Template:
   `templates/tool/`.
 - **`extensions/<name>/`** — an optional standing behavior. Template:
   `templates/extension/`.

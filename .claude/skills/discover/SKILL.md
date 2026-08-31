@@ -17,6 +17,13 @@ instrument you use — a CLI/library that drives or inspects other services). **
 always happens; cloning and enabling are optional.** This skill does **not** work out how to fully run a component —
 that's `/run-target`; discover records run-*hints* only if they fall out of the scan.
 
+> A **tool need not be a repo.** It can also be a non-repo bundle of info + infra —
+> instructions for using a public endpoint, a set of scripts for a specific task, etc. When
+> there's no repo to characterize, skip the repo-scan steps below (resolve/SmartAPI/clone) and
+> author the `tools/<name>/definition.md` directly from what the dev provides: what capability
+> it gives, how to invoke it (endpoint URL + example calls, or the scripts + how to run them),
+> and when to reach for it. Everything else (snippets, enable, contribution) is the same.
+
 ## 1. Resolve the reference
 
 - `org/repo`, a URL, or a local path → use directly.
@@ -28,8 +35,10 @@ that's `/run-target`; discover records run-*hints* only if they fall out of the 
 ## 2. Determine the bundle kind
 
 - **component** — a repo you investigate, or a TRAPI service/backend in the ecosystem.
-- **tool** — a repo you use as an *instrument* of investigation (a CLI/library that drives or
-  inspects other services).
+- **tool** — an *instrument* of investigation: usually a repo (a CLI/library that drives or
+  inspects other services), but also a non-repo bundle of info + infra (public-endpoint
+  instructions, a script bundle). For a non-repo tool, skip the repo-scan steps (§4's clone /
+  SmartAPI) and author the definition directly (see the callout above).
 - Read the dev's **intent** from the request: "use X to… / X is my tool for…" ⇒ tool; "look at /
   debug / investigate X" ⇒ component. **Ask if unclear.** This picks the template + output dir.
 
@@ -82,7 +91,9 @@ README/manifest); **run-hints** (task-runner commands, ports, docker services �
   best-effort run-hints only** (→ `/run-target`).
 - **tool** (`tools/<name>/definition.md`): `provides` (the capability, drives `tool_choice`),
   `status`, `owner`. Body: what it provides + install/invoke + usage; point at its shipped skill if
-  it has one. Secrets: descriptions + placeholders only (`BUNDLES.md`).
+  it has one. For a **non-repo tool**, leave `org`/`repo` blank and make the body the usage itself
+  (endpoint URL + example calls, or the scripts + how to run them). Secrets: descriptions +
+  placeholders only (`BUNDLES.md`).
 
 ## 6. Tools: offer to author snippets (from the interview)
 
@@ -101,7 +112,8 @@ If the tool ships its own skill, enabling also symlinks that in (so `/its-skill`
 
 - **Adopt/use it** → record in `scope.yaml` `enabled:`, then `enable-bundle.py` (symlinks skills,
   re-indexes concepts, **auto-merges the AGENTS.local.md snippet**, offers any hook) — see AGENTS.md
-  "Enabling & disabling bundles". Clone into `repos/`.
+  "Enabling & disabling bundles". Clone into `repos/` (a **non-repo tool** has nothing to clone —
+  enable it the same way, minus the clone).
 - **Peripheral only** → stop at the `inferred` definition; no clone into `repos/`, no enable. (Drop
   the scratch clone.)
 
