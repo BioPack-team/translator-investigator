@@ -40,6 +40,6 @@ subclass reasoning natively; **QGX's subclass expansion does not apply to Tier 0
 QGX is the boundary between "retriever did the reasoning" and "the backend did the reasoning."
 Because Tier 1/2 go through QGX (retriever's own traversal + subclass expansion) while Tier 0
 delegates wholesale to Gandalf, a **Tier 0 vs Tier 1 discrepancy** (e.g. different aux graphs or
-subclass rollups) usually pins to the *backend that produced it* — Gandalf for Tier 0 — rather
+subclass edges) usually pins to the *backend that produced it* — Gandalf for Tier 0 — rather
 than to a single shared retriever code path. Knowing which tier ran tells you which engine to
 suspect.

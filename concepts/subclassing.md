@@ -11,7 +11,6 @@ aka:
   - implicit subclassing
   - subclass reasoning
   - subclass expansion
-  - subclass rollup
   - subclass_of
   - logical_entailment construct edge
   - implicit_subclassing
@@ -31,7 +30,7 @@ curation: canonical
 ## What it is
 
 A query pinned to a **general** term should also be satisfied by knowledge about its **ontological
-subclasses (descendants)**, rolled up to the parent. E.g. "what treats diabetes mellitus
+subclasses (descendants)**, attributed to the parent. E.g. "what treats diabetes mellitus
 (`MONDO:0005015`)?" should surface a drug that treats *type 2 diabetes* (a subclass), presented as
 an answer about the parent. It turns a single-term lookup into a lookup over the term *and its
 descendants*.
@@ -73,5 +72,5 @@ tiers — is a component-specific detail; it lives in that component's bundle co
 `infores:obie` provenance on an edge is the tell that it's an OBI construct edge, not a plain
 lookup. So a difference in subclass-derived aux graphs **across backends** points at that backend's
 native reasoning (or its underlying data) — not at an aggregator's orchestration. Getting this
-straight is what lets an investigation localize a subclass-rollup discrepancy to the right
+straight is what lets an investigation localize a subclass-derived discrepancy to the right
 component.

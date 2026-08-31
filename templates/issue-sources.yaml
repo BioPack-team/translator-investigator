@@ -5,9 +5,12 @@
 # Resolution: the LONGEST matching alias wins; a bare "look at <num>" falls back to `default`.
 # Each alias entry: <alias>: { repo: <org>/<repo>, dir: <investigations/ path segment> }.
 
-default: <your-default-target>    # bare "look at <num>" resolves here (e.g. your main component)
+default: <your-default-repo>      # bare "look at <num>" resolves here — your main component, or any
+                                  # repo you triage most (no purview / ownership required)
 
 aliases:
+  # Register any repo you want to triage — no purview / ownership needed. Triage-only devs
+  # (PIs, PMs) live here: list the repos you watch and the agent resolves issues across them.
   # A few consortium-wide starters — uncomment/extend for your scope:
   # feedback:   { repo: NCATSTranslator/Feedback, dir: feedback }   # cross-team gap/feedback tracker
   # retriever:  { repo: BioPack-team/retriever,    dir: retriever }

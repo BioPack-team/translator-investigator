@@ -7,8 +7,10 @@ Clone it, set up your scope, and start investigating.
 ## Quick start
 
 1. Clone the repo and open it in Claude Code.
-2. Run **`/onboard`** — sets up your scope (identity, purview, target repos, preferences), wires
-   contribution remotes, and enables the tools you want.
+2. Run **`/onboard`** — sets up your scope (identity, purview, target repos, issue sources,
+   preferences), wires contribution remotes, and enables the tools you want. Purview is optional:
+   PIs, PMs, and other triage-only roles can register the repos they watch as issue sources without
+   owning a component.
 3. Start an investigation — give Claude a GitHub issue (`investigate #123`) or a topic
    (`look into <X>`); it scaffolds a workdir and works it with you.
 

@@ -112,22 +112,22 @@ index by hand.
 
 - **component-maturity-levels** — maturity, maturity level, maturity levels, component maturity, deployment maturity, maturity ladder, x-maturity, x_maturity, instance_env, dev level, development level, ci level, staging, test level, testing level, prod, production level, pre-prod → `concepts/component-maturity-levels.md`
 - **query-resolution-modes** — lookup, creative, magic, inferred mode, inferred, pathfinder, set-input, set_interpretation, knowledge_type inferred → `concepts/query-resolution-modes.md`
-- **subclassing** — OBI, Ontology-Based Inference, OBIE, Ontology-Based Inference Engine, infores:obie, ISR, implicit subclass reasoning, implicit subclassing, subclass reasoning, subclass expansion, subclass rollup, subclass_of, logical_entailment construct edge, implicit_subclassing → `concepts/subclassing.md`
+- **subclassing** — OBI, Ontology-Based Inference, OBIE, Ontology-Based Inference Engine, infores:obie, ISR, implicit subclass reasoning, implicit subclassing, subclass reasoning, subclass expansion, subclass_of, logical_entailment construct edge, implicit_subclassing → `concepts/subclassing.md`
 
 <!-- CONCEPT-INDEX:END -->
 
 ## Routing — reach for the right skill
 
-| When…                                                                                     | Do                                                                              |
-| ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| First run, or changing the dev's setup (identity, purview, targets, preferences, remotes) | `/onboard`                                                                      |
-| Start work on a GitHub issue                                                              | `/begin-investigation` → scaffolds `investigations/<repo>/i<num>/` (issue mode) |
-| Start a free / cross-cutting investigation                                                | `/begin-investigation` → `investigations/topics/<slug>/` (topic mode)           |
-| A repo that isn't characterized yet comes up                                              | `/discover <repo>`                                                              |
-| Need to run or debug a target locally                                                     | `/run-target <name>`                                                            |
-| A concept-worthy mechanism/term recurs, or the dev asks to capture one                    | `/concept-capture`                                                              |
-| Share a concept / component / tool / extension upstream                                   | `/contribute`                                                                   |
-| Resolve "look at `<num>`" / an issue nickname                                             | via `issue-sources.yaml` (longest alias wins; else the dev's default target)    |
+| When…                                                                                                    | Do                                                                              |
+| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| First run, or changing the dev's setup (identity, purview, targets, issue sources, preferences, remotes) | `/onboard`                                                                      |
+| Start work on a GitHub issue                                                                             | `/begin-investigation` → scaffolds `investigations/<repo>/i<num>/` (issue mode) |
+| Start a free / cross-cutting investigation                                                               | `/begin-investigation` → `investigations/topics/<slug>/` (topic mode)           |
+| A repo that isn't characterized yet comes up                                                             | `/discover <repo>`                                                              |
+| Need to run or debug a target locally                                                                    | `/run-target <name>`                                                            |
+| A concept-worthy mechanism/term recurs, or the dev asks to capture one                                   | `/concept-capture`                                                              |
+| Share a concept / component / tool / extension upstream                                                  | `/contribute`                                                                   |
+| Resolve "look at `<num>`" / an issue nickname                                                            | via `issue-sources.yaml` (longest alias wins; else the issue-sources `default`) |
 
 ## Enabling & disabling bundles
 
@@ -155,8 +155,10 @@ can miss a hand-edited hook). **Never commit enable/disable changes** (all per-d
 
 ## Layout (pointers)
 
-- `scope.yaml` — the dev's identity, purview, targets, remotes, **enabled bundles**,
-  preferences (set by `/onboard`).
+- `scope.yaml` — the dev's identity, purview (**optional** — empty for triage-only PI/PM
+  roles), targets, remotes, **enabled bundles**, preferences (set by `/onboard`).
+- `issue-sources.yaml` — the repos the dev triages (nickname → repo), **independent of
+  purview** — a triage-only dev registers repos here to investigate across them (set by `/onboard`).
 - `components/<name>/` · `tools/<name>/` · `extensions/<name>/` — **bundle
   dirs** (`definition.md` + optional `skills/` + `concepts/` + opt-in `snippets/`);
   inert until _enabled_ (see "Enabling & disabling bundles" above). Anatomy + authoring:

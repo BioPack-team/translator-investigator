@@ -18,7 +18,7 @@ recording, and iterating afterward is the ambient investigate posture in CLAUDE.
 ## 1. Pick the mode
 
 - **issue** — a filed GitHub issue. Resolve the nickname via `issue-sources.yaml`
-  (longest alias wins; else the dev's default target) → `<org>/<repo>` + number.
+  (longest alias wins; else the issue-sources `default`) → `<org>/<repo>` + number.
 - **topic** — free-form / cross-cutting. Choose a short kebab-case slug.
 
 ## 2. Gather context + confirm direction
