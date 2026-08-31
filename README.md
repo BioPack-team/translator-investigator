@@ -8,14 +8,20 @@ Clone it, set up your scope, and start investigating.
 
 ## Quick start
 
-1. Clone the repo and open it in your coding agent (e.g. Claude Code).
-2. Run **`/onboard`** — sets up your scope (identity, purview, target repos, issue
+1. Install the prerequisites: the
+   [GitHub CLI](https://github.com/cli/cli#installation) (`gh`, then `gh auth login` to
+   authenticate) and
+   [uv](https://docs.astral.sh/uv/getting-started/installation/#installing-uv) — install uv
+   from your system package manager (Homebrew, apt, etc.) or with `pip install uv`. (See
+   [Requirements](#requirements) for the full list.)
+2. Clone the repo and open it in your coding agent (e.g. Claude Code).
+3. Run **`/onboard`** — sets up your scope (identity, purview, target repos, issue
    sources, preferences), wires contribution remotes, and enables the tools you want. It
    also sets up the **activation layer** for your agent (skills + concept-reindex hooks)
    — on a non-Claude agent it attempts to port those hooks (see `AGENTS.md`). Purview is
    optional: PIs, PMs, and other triage-only roles can register the repos they watch as
    issue sources — purview (which marks components you maintain) is not required.
-3. Start an investigation — give the agent a GitHub issue (`investigate #123`) or a
+4. Start an investigation — give the agent a GitHub issue (`investigate #123`) or a
    topic (`look into <X>`); it scaffolds a workdir and works it with you.
 
 ## Workflow
