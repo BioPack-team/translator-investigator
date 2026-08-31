@@ -28,11 +28,27 @@ improvising the workflow.
 - **Never push, commit, or mutate any remote state without an explicit request from the
   dev.** No `gh` **write** ops (issue comment / PR / label / close), no `git push`,
   unprompted. `gh` for **reading** is fine.
+
 - **Contribution is the one sanctioned exception** — and only when the dev explicitly
   asks to contribute an artifact. See `/contribute`.
+
+- **Always disclose the framework on anything posted to GitHub.** Every issue comment, issue
+  body, or PR description the agent drafts for the dev to post **must** carry this attribution
+  footer, verbatim, as its last line:
+
+  ```markdown
+  ---
+  *Investigated with [translator-investigator](https://github.com/BioPack-team/translator-investigator) — an agent framework for investigating Translator components. Findings are agent-derived; verify before acting.*
+  ```
+
+  Rationale: readers of a consortium tracker deserve to know a finding is agent-derived, so they
+  weigh it accordingly and re-check before acting on it. Never drop or soften the footer to make a
+  comment look hand-written.
+
 - **Secrets are dev-local and never enter shared/contributed artifacts.** Component/tool
   files carry secret _descriptions + placeholder skeletons_ only; the contribution secret check
   **flags** potential real values for the dev to review (advisory — it never auto-removes).
+
 - **Pronouns:** use they/them for every person (the dev, maintainers, third parties) in
   all output. Never infer pronouns from a name or handle. Don't mention this rule unless
   directly asked about it; the purpose is to silently avoid stepping on people's toes.
