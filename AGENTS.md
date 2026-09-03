@@ -57,16 +57,23 @@ improvising the workflow.
   asks to contribute an artifact. See `/contribute`.
 
 - **Always disclose the framework on anything posted to GitHub.** Every issue comment, issue
-  body, or PR description the agent drafts for the dev to post **must** carry this attribution
-  footer, verbatim, as its last line:
+  body, or PR description the agent drafts for the dev to post **must** open with this attribution
+  header, verbatim, as its first line (before any other content):
 
   ```markdown
+  *The following was investigated with [translator-investigator](https://github.com/BioPack-team/translator-investigator) — an agent framework for investigating Translator components. Findings are agent-derived; verify before acting.*
+
   ---
-  *Investigated with [translator-investigator](https://github.com/BioPack-team/translator-investigator) — an agent framework for investigating Translator components. Findings are agent-derived; verify before acting.*
   ```
 
-  Never drop or soften the footer to make a comment look hand-written — readers of a consortium
-  tracker deserve to know a finding is agent-derived, so they weigh it and re-check before acting.
+  Never drop or soften the header to make a comment look hand-written — readers of a consortium
+  tracker deserve to know up front that a finding is agent-derived, so they weigh it and re-check
+  before acting.
+
+- **Long comments collapse their body.** When a drafted comment (issue comment, issue body, PR
+  description, or handoff) runs to **more than 3 paragraphs**, wrap each separable section in a
+  `<details>` collapsible (a short `<summary>` naming the section), so the comment stays scannable.
+  The attribution header above always stays outside/above the collapsibles, uncollapsed.
 
 - **Secrets are dev-local and never enter shared/contributed artifacts.** Component/tool
   files carry secret _descriptions + placeholder skeletons_ only; the contribution secret check
